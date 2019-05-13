@@ -63,16 +63,37 @@ void DataAugmentor::bilateralFilter(cv::Mat & input, cv::Mat & output, int d, do
 	cv::bilateralFilter(input, output, d, sigma_color, sigma_space, border_type);
 }
 
+void DataAugmentor::addGaussianNoise(cv::Mat & input, cv::Mat & output, double mu, double sigma)
+{
+	addPDFNoise(input, output, DIST_GAUSSIAN, { mu,sigma });
+}
+
+void DataAugmentor::addUniformNoise(cv::Mat & input, cv::Mat & output, double a, double b)
+{
+	addPDFNoise(input, output, DIST_UNIFORM, { a,b });
+}
+
+void DataAugmentor::addGammaNoise(cv::Mat & input, cv::Mat & output, double alpha, double beta)
+{
+	if (alpha <= 0) {
+		cout << "alpha > 0" << endl;
+		return;
+	}
+	if (beta <= 0) {
+		cout << "beta > 0" << endl;
+		return;
+	}
+	addPDFNoise(input, output, DIST_GAMMA, { alpha,beta });
+}
+
 
 void DataAugmentor::addPDFNoise(cv::Mat& input, cv::Mat& output, int pdf, std::initializer_list<double> il)
 {
 	output = input.clone();
 	mt19937 gen(random_device{}());
-
 	DistributionWrapper dist_wrapper;
 
-
-	if (pdf == DIST_NORMAL) {
+	if (pdf == DIST_NORMAL || pdf == DIST_GAUSSIAN) {
 		auto it = il.begin();
 		double mu = *it++;
 		double sigma = *it;
@@ -84,7 +105,12 @@ void DataAugmentor::addPDFNoise(cv::Mat& input, cv::Mat& output, int pdf, std::i
 		double b = *it;
 		dist_wrapper.setUniformDistribution(a, b);
 	}
-
+	else if (pdf == DIST_GAMMA) {
+		auto it = il.begin();
+		double alpha = *it++;
+		double beta = *it;
+		dist_wrapper.setGammaDistribution(alpha, beta);
+	}
 
 	if (input.channels() == 1) {
 		for (auto it = input.begin<uchar>(); it != input.end<uchar>(); ++it) {

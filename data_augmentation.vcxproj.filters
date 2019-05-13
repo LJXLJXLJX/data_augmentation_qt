@@ -50,9 +50,15 @@
     <ClCompile Include="src\utils\distribution_wrapper.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\C\command_editor.cpp">
+      <Filter>Source Files\C</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\data_augmentation.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ui\command_editor.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -66,9 +72,15 @@
     <ClInclude Include="src\utils\distribution_wrapper.h">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_command_editor.h">
+      <Filter>Source Files\V</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\C\data_augmentation_app.h">
+      <Filter>Source Files\C</Filter>
+    </QtMoc>
+    <QtMoc Include="src\C\command_editor.h">
       <Filter>Source Files\C</Filter>
     </QtMoc>
   </ItemGroup>

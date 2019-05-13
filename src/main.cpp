@@ -12,15 +12,15 @@ using namespace cv;
 
 int main(int argc, char *argv[])
 {
-	//QApplication a(argc, argv);
-	//DataAugmentationApp w;
-	//w.show();
-	//return a.exec();
+	QApplication a(argc, argv);
+	DataAugmentationApp w;
+	w.show();
+	return a.exec();
 
 
 	//以下是测试
-	DataAugmentor* da = DataAugmentor::getInstance();
-	Mat img = imread("Resources/hj.jpg");
+	//DataAugmentor* da = DataAugmentor::getInstance();
+	//Mat img = imread("Resources/hj.jpg", 0);
 
 	//img = da->translation(img, -10, 10, BORDER_REFLECT, 0);
 	//img = da->rotate(img, img.cols / 2, img.rows / 2, 90, BORDER_REFLECT101);
@@ -28,15 +28,10 @@ int main(int argc, char *argv[])
 	//img = da->flipping(img, -1);
 	//da->gaussianFilter(img,img,15, 15, 8, 8);
 	//da->meanFilter(img, img, 15, 15, BORDER_DEFAULT);
-	//da->bilateralFilter(img, img, 25, 12.5, 50);
-	da->addPDFNoise(img, img, DIST_UNIFORM, { -200,200 });
+	////da->bilateralFilter(img, img, 25, 12.5, 50);
+	//da->addGammaNoise(img, img, 1.0, 2.0);
 
-
-	imshow("test", img);
-	waitKey();
-	destroyAllWindows();
-
-
-
-
+	//imshow("test", img);
+	//waitKey();
+	//destroyAllWindows();
 }

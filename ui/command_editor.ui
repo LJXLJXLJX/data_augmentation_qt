@@ -1,0 +1,944 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>commandEditorClass</class>
+ <widget class="QDialog" name="commandEditorClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>440</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>命令设置</string>
+  </property>
+  <widget class="QStackedWidget" name="stackedWidget">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>110</y>
+     <width>261</width>
+     <height>261</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>5</number>
+   </property>
+   <widget class="QWidget" name="pageTranslate">
+    <widget class="QDoubleSpinBox" name="translateXSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>65</x>
+       <y>76</y>
+       <width>71</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.100000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="translateYSpinBox">
+     <property name="geometry">
+      <rect>
+       <x>63</x>
+       <y>145</y>
+       <width>71</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.100000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tranlateXLabel">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>80</y>
+       <width>20</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>X</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="translateYLabel">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>150</y>
+       <width>18</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Y</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="translateXSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>154</x>
+       <y>76</y>
+       <width>71</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.100000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="translateYSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>152</x>
+       <y>145</y>
+       <width>71</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.100000000000000</double>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="pageRotate">
+    <widget class="QDoubleSpinBox" name="rotateAngleMin">
+     <property name="geometry">
+      <rect>
+       <x>94</x>
+       <y>119</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-360.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>360.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="rotateLabel">
+     <property name="geometry">
+      <rect>
+       <x>14</x>
+       <y>124</y>
+       <width>54</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>旋转角度</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="rotateAngleMax">
+     <property name="geometry">
+      <rect>
+       <x>172</x>
+       <y>119</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-360.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>360.000000000000000</double>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="pageScaling">
+    <widget class="QLabel" name="scalingXlabel">
+     <property name="geometry">
+      <rect>
+       <x>41</x>
+       <y>106</y>
+       <width>25</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>X</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="scalingXSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>102</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="scalingYLabel">
+     <property name="geometry">
+      <rect>
+       <x>41</x>
+       <y>151</y>
+       <width>25</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Y</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="scalingYSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>147</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="scalingXSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>151</x>
+       <y>102</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="scalingYSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>151</x>
+       <y>147</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="pageFlipping">
+    <widget class="QCheckBox" name="flippingXcheckBox">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>90</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>X</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="flippingYcheckBox">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>140</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Y</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="pageGaussianFilter">
+    <widget class="QLabel" name="gaussianFilterKxLable">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>65</y>
+       <width>54</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>kx</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="gaussianFilterKxSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>60</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="gaussianFilterKxLableSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>100</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="gaussianFilterKyLable">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>105</y>
+       <width>54</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ky</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="gaussianFilterSigmaXLable">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>145</y>
+       <width>54</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>sigmaX</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="gaussianFilterSigmaXSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>140</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="gaussianFilterSigmaYLable">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>180</y>
+       <width>54</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>sigmaY</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="gaussianFilterSigmaYSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>175</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="gaussianFilterKxLableSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>100</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="gaussianFilterSigmaYSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>175</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="gaussianFilterKxSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>60</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="gaussianFilterSigmaXSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>140</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="pageMedianFilter">
+    <widget class="QLabel" name="medianFilterKsizeLabel">
+     <property name="geometry">
+      <rect>
+       <x>26</x>
+       <y>129</y>
+       <width>54</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ksize</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="medianFilterKsizeSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>116</x>
+       <y>124</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="medianFilterKsizeSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>206</x>
+       <y>124</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="pageMeanFilter">
+    <widget class="QSpinBox" name="meanFilterKySpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>113</x>
+       <y>144</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="meanFilterKxSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>113</x>
+       <y>104</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="meanFilterKxSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>203</x>
+       <y>104</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="meanFilterKyLabel">
+     <property name="geometry">
+      <rect>
+       <x>23</x>
+       <y>149</y>
+       <width>54</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ky</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="meanFilterKxLabel">
+     <property name="geometry">
+      <rect>
+       <x>23</x>
+       <y>109</y>
+       <width>54</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>kx</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="meanFilterKySpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>203</x>
+       <y>144</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="pageBilateralFilter">
+    <widget class="QLabel" name="bilateralFilterSigmaColorLabel">
+     <property name="geometry">
+      <rect>
+       <x>18</x>
+       <y>124</y>
+       <width>68</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>sigma color</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="bilateralFilterSigmaSpaceSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>98</x>
+       <y>154</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="bilateralFilterSigmaSpaceLabel">
+     <property name="geometry">
+      <rect>
+       <x>18</x>
+       <y>159</y>
+       <width>65</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>sigma space</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="bilateralFilterSigmaColorSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>98</x>
+       <y>119</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="bilateralFilterSigmaColorSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>188</x>
+       <y>119</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="bilateralFilterSigmaSpaceSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>188</x>
+       <y>154</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="bilateralFilterDSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>83</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="bilateralFilterDSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>83</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="bilateralFilterDLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>88</y>
+       <width>54</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>d</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="pageGaussianNoise">
+    <widget class="QDoubleSpinBox" name="gaussianNoiseMuSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>93</x>
+       <y>97</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-500.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>500.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="gaussianNoiseMuLabel">
+     <property name="geometry">
+      <rect>
+       <x>13</x>
+       <y>102</y>
+       <width>65</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>mu</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="gaussianNoiseMuSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>183</x>
+       <y>97</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-500.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>500.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="gaussianNoiseSigmaSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>93</x>
+       <y>139</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <double>1000.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="gaussianNoiseSigmaLabel">
+     <property name="geometry">
+      <rect>
+       <x>13</x>
+       <y>144</y>
+       <width>65</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>sigma</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="gaussianNoiseSigmaSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>183</x>
+       <y>139</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <double>1000.000000000000000</double>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="pageUniformNoise">
+    <widget class="QDoubleSpinBox" name="uniformNoiseASpinBox">
+     <property name="geometry">
+      <rect>
+       <x>139</x>
+       <y>112</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-255.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>255.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="uniformNoiseBSpinBox">
+     <property name="geometry">
+      <rect>
+       <x>139</x>
+       <y>154</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-255.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>255.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="uniformNoiseBLabel">
+     <property name="geometry">
+      <rect>
+       <x>59</x>
+       <y>159</y>
+       <width>65</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>b</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="uniformNoiseALabel">
+     <property name="geometry">
+      <rect>
+       <x>59</x>
+       <y>117</y>
+       <width>65</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>a</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="pageGammaNoise">
+    <widget class="QDoubleSpinBox" name="gammaNoiseAlphaSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>92</x>
+       <y>101</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>0.100000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>500.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="gammaNoiseBetaSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>182</x>
+       <y>143</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>0.100000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>1000.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="gammaNoiseBetaSpinBoxMin">
+     <property name="geometry">
+      <rect>
+       <x>92</x>
+       <y>143</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>0.100000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>1000.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="gammaNoiseAlphaSpinBoxMax">
+     <property name="geometry">
+      <rect>
+       <x>182</x>
+       <y>101</y>
+       <width>62</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>0.100000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>500.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="gammaNoiseBetaLabel">
+     <property name="geometry">
+      <rect>
+       <x>12</x>
+       <y>148</y>
+       <width>65</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>beta</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="gammaNoiseAlphaLabel">
+     <property name="geometry">
+      <rect>
+       <x>12</x>
+       <y>106</y>
+       <width>65</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>alpha</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>40</y>
+     <width>161</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>平移</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>旋转</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>缩放</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>翻转</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>高斯滤波</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>中值滤波</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>均值滤波</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>双线性滤波</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>高斯噪声</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>均匀噪声</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>伽马噪声</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

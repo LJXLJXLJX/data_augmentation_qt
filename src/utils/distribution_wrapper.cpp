@@ -5,39 +5,33 @@ using namespace std;
 
 void DistributionWrapper::setNormalDistribution(double mu, double sigma)
 {
-	if (m_dist_ptr != nullptr)
-		delete m_dist_ptr;
-	m_dist_ptr = new uniform_real_distribution<>(mu, sigma);
 	m_pdf = DIST_NORMAL;
+	m_normal_dist.param(normal_distribution<>::param_type(mu, sigma));
 }
 
 void DistributionWrapper::setUniformDistribution(double a, double b)
 {
-	if (m_dist_ptr != nullptr)
-		delete m_dist_ptr;
-	m_dist_ptr = new uniform_real_distribution<>(a, b);
 	m_pdf = DIST_UNIFORM;
+	m_uniform_real_dist.param(uniform_real_distribution<>::param_type(a, b));
 }
 
 void DistributionWrapper::setGammaDistribution(double alpha, double beta)
 {
-	if (m_dist_ptr != nullptr)
-		delete m_dist_ptr;
-	m_dist_ptr = new gamma_distribution<>(alpha, beta);
 	m_pdf = DIST_GAMMA;
+	m_gamma_dist.param(gamma_distribution<>::param_type(alpha, beta));
 }
 
 int DistributionWrapper::getValue()
 {
 	double tmp = 0;
 	if (m_pdf == DIST_NORMAL) {
-		tmp = (*static_cast<normal_distribution<>*>(m_dist_ptr))(m_gen);
+		tmp = m_normal_dist(m_gen);
 	}
 	else if (m_pdf == DIST_UNIFORM) {
-		tmp = (*static_cast<uniform_real_distribution<>*>(m_dist_ptr))(m_gen);
+		tmp = m_uniform_real_dist(m_gen);
 	}
 	else if (m_pdf == DIST_GAMMA) {
-
+		tmp = m_gamma_dist(m_gen);
 	}
 	tmp = round(tmp);
 	int ret = tmp;

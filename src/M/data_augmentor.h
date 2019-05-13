@@ -14,9 +14,6 @@
 #endif // _DEBUG
 
 
-
-
-
 class DataAugmentor
 {
 public:
@@ -37,6 +34,14 @@ public:
 	void medianFilter(cv::Mat& input, cv::Mat& output, int ksize);
 
 	void bilateralFilter(cv::Mat& input, cv::Mat& output, int d, double sigma_color, double sigma_space, int border_type = cv::BORDER_DEFAULT);
+
+	void addGaussianNoise(cv::Mat& input, cv::Mat& output, double mu, double sigma);
+
+	void addUniformNoise(cv::Mat& input, cv::Mat& output, double a, double b);
+
+	void addGammaNoise(cv::Mat& input, cv::Mat& output, double alpha, double beta);
+
+private:
 
 	void addPDFNoise(cv::Mat& input, cv::Mat& output, int pdf, std::initializer_list<double> il);
 

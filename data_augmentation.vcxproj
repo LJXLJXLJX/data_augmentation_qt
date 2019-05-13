@@ -11,16 +11,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\C\command_editor.cpp" />
     <ClCompile Include="src\C\data_augmentation_app.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\M\data_augmentor.cpp" />
     <ClCompile Include="src\utils\distribution_wrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="ui\command_editor.ui" />
     <QtUic Include="ui\data_augmentation.ui" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GeneratedFiles\ui_command_editor.h" />
     <ClInclude Include="GeneratedFiles\ui_data_augmentation.h" />
+    <QtMoc Include="src\C\command_editor.h" />
     <ClInclude Include="src\M\data_augmentor.h" />
     <ClInclude Include="src\utils\distribution_wrapper.h" />
     <QtMoc Include="src\C\data_augmentation_app.h" />

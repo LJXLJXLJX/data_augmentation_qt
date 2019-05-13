@@ -11,10 +11,14 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -22,25 +26,62 @@ QT_BEGIN_NAMESPACE
 class Ui_DataAugmentationClass
 {
 public:
+    QWidget *centralWidget;
+    QWidget *widget;
+    QVBoxLayout *commandListLayout;
+    QLabel *commandListLabel;
+    QListWidget *commandList;
+    QPushButton *pb_addItemToCommandList;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
-    QWidget *centralWidget;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *DataAugmentationClass)
     {
         if (DataAugmentationClass->objectName().isEmpty())
             DataAugmentationClass->setObjectName(QString::fromUtf8("DataAugmentationClass"));
-        DataAugmentationClass->resize(600, 400);
+        DataAugmentationClass->setEnabled(true);
+        DataAugmentationClass->resize(800, 600);
+        centralWidget = new QWidget(DataAugmentationClass);
+        centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
+        widget = new QWidget(centralWidget);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setGeometry(QRect(50, 30, 258, 301));
+        commandListLayout = new QVBoxLayout(widget);
+        commandListLayout->setSpacing(6);
+        commandListLayout->setContentsMargins(11, 11, 11, 11);
+        commandListLayout->setObjectName(QString::fromUtf8("commandListLayout"));
+        commandListLayout->setContentsMargins(0, 0, 0, 0);
+        commandListLabel = new QLabel(widget);
+        commandListLabel->setObjectName(QString::fromUtf8("commandListLabel"));
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(commandListLabel->sizePolicy().hasHeightForWidth());
+        commandListLabel->setSizePolicy(sizePolicy);
+        commandListLabel->setLayoutDirection(Qt::LeftToRight);
+        commandListLabel->setAlignment(Qt::AlignCenter);
+
+        commandListLayout->addWidget(commandListLabel);
+
+        commandList = new QListWidget(widget);
+        commandList->setObjectName(QString::fromUtf8("commandList"));
+
+        commandListLayout->addWidget(commandList);
+
+        pb_addItemToCommandList = new QPushButton(widget);
+        pb_addItemToCommandList->setObjectName(QString::fromUtf8("pb_addItemToCommandList"));
+
+        commandListLayout->addWidget(pb_addItemToCommandList);
+
+        DataAugmentationClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(DataAugmentationClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
+        menuBar->setGeometry(QRect(0, 0, 800, 23));
         DataAugmentationClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(DataAugmentationClass);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
-        DataAugmentationClass->addToolBar(mainToolBar);
-        centralWidget = new QWidget(DataAugmentationClass);
-        centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        DataAugmentationClass->setCentralWidget(centralWidget);
+        DataAugmentationClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(DataAugmentationClass);
         statusBar->setObjectName(QString::fromUtf8("statusBar"));
         DataAugmentationClass->setStatusBar(statusBar);
@@ -53,6 +94,8 @@ public:
     void retranslateUi(QMainWindow *DataAugmentationClass)
     {
         DataAugmentationClass->setWindowTitle(QApplication::translate("DataAugmentationClass", "DataAugmentation", nullptr));
+        commandListLabel->setText(QApplication::translate("DataAugmentationClass", "\345\242\236\345\274\272\345\221\275\344\273\244\345\210\227\350\241\250", nullptr));
+        pb_addItemToCommandList->setText(QApplication::translate("DataAugmentationClass", "\346\267\273\345\212\240\345\221\275\344\273\244", nullptr));
     } // retranslateUi
 
 };
