@@ -25,7 +25,7 @@ public:
 
 	void setGammaDistribution(double alpha, double beta);
 
-	int getValue();
+	double getValue();
 
 private:
 

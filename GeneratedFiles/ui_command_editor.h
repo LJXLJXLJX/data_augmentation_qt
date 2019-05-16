@@ -16,6 +16,7 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QWidget>
@@ -28,7 +29,7 @@ public:
     QStackedWidget *stackedWidget;
     QWidget *pageTranslate;
     QDoubleSpinBox *translateXSpinBoxMin;
-    QDoubleSpinBox *translateYSpinBox;
+    QDoubleSpinBox *translateYSpinBoxMin;
     QLabel *tranlateXLabel;
     QLabel *translateYLabel;
     QDoubleSpinBox *translateXSpinBoxMax;
@@ -101,6 +102,7 @@ public:
     QLabel *gammaNoiseBetaLabel;
     QLabel *gammaNoiseAlphaLabel;
     QComboBox *comboBox;
+    QPushButton *commandEditorOKButton;
 
     void setupUi(QDialog *commandEditorClass)
     {
@@ -117,11 +119,11 @@ public:
         translateXSpinBoxMin->setGeometry(QRect(65, 76, 71, 22));
         translateXSpinBoxMin->setMaximum(1.000000000000000);
         translateXSpinBoxMin->setSingleStep(0.100000000000000);
-        translateYSpinBox = new QDoubleSpinBox(pageTranslate);
-        translateYSpinBox->setObjectName(QString::fromUtf8("translateYSpinBox"));
-        translateYSpinBox->setGeometry(QRect(63, 145, 71, 22));
-        translateYSpinBox->setMaximum(1.000000000000000);
-        translateYSpinBox->setSingleStep(0.100000000000000);
+        translateYSpinBoxMin = new QDoubleSpinBox(pageTranslate);
+        translateYSpinBoxMin->setObjectName(QString::fromUtf8("translateYSpinBoxMin"));
+        translateYSpinBoxMin->setGeometry(QRect(63, 145, 71, 22));
+        translateYSpinBoxMin->setMaximum(1.000000000000000);
+        translateYSpinBoxMin->setSingleStep(0.100000000000000);
         tranlateXLabel = new QLabel(pageTranslate);
         tranlateXLabel->setObjectName(QString::fromUtf8("tranlateXLabel"));
         tranlateXLabel->setGeometry(QRect(40, 80, 20, 16));
@@ -388,10 +390,13 @@ public:
         comboBox->addItem(QString());
         comboBox->setObjectName(QString::fromUtf8("comboBox"));
         comboBox->setGeometry(QRect(120, 40, 161, 22));
+        commandEditorOKButton = new QPushButton(commandEditorClass);
+        commandEditorOKButton->setObjectName(QString::fromUtf8("commandEditorOKButton"));
+        commandEditorOKButton->setGeometry(QRect(242, 397, 75, 23));
 
         retranslateUi(commandEditorClass);
 
-        stackedWidget->setCurrentIndex(5);
+        stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(commandEditorClass);
@@ -435,6 +440,7 @@ public:
         comboBox->setItemText(9, QApplication::translate("commandEditorClass", "\345\235\207\345\214\200\345\231\252\345\243\260", nullptr));
         comboBox->setItemText(10, QApplication::translate("commandEditorClass", "\344\274\275\351\251\254\345\231\252\345\243\260", nullptr));
 
+        commandEditorOKButton->setText(QApplication::translate("commandEditorClass", "\347\241\256\345\256\232", nullptr));
     } // retranslateUi
 
 };

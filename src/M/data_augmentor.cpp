@@ -1,5 +1,5 @@
 #include "data_augmentor.h"
-#include "../utils/distribution_wrapper.h"
+#include "distribution_wrapper.h"
 
 #include <random>
 
@@ -20,13 +20,13 @@ void DataAugmentor::translation(cv::Mat & input, cv::Mat& output, int dx, int dy
 	warpAffine(input, output, M, Size(input.cols, input.rows), INTER_LINEAR, border_type, 0);
 }
 
-void DataAugmentor::rotate(cv::Mat & input, cv::Mat& output, int center_x, int center_y, float theta, int border_type, int arg)
+void DataAugmentor::rotate(cv::Mat & input, cv::Mat& output, int center_x, int center_y, double theta, int border_type, int arg)
 {
 	Mat M = getRotationMatrix2D(Point(center_x, center_y), theta, 1.0);
 	warpAffine(input, output, M, Size(input.cols, input.rows), INTER_LINEAR, border_type, 0);
 }
 
-void DataAugmentor::scaling(cv::Mat & input, cv::Mat& output, float relative_x, float relative_y, int interpolation_mode)
+void DataAugmentor::scaling(cv::Mat & input, cv::Mat& output, double relative_x, double relative_y, int interpolation_mode)
 {
 	Mat M = (Mat_<float>(2, 3) << relative_x, 0, 0, 0, relative_y, 0);
 	warpAffine(input, output, M, Size(int(relative_x*input.cols), int(relative_y*input.rows)), interpolation_mode);
@@ -90,7 +90,7 @@ void DataAugmentor::addGammaNoise(cv::Mat & input, cv::Mat & output, double alph
 void DataAugmentor::addPDFNoise(cv::Mat& input, cv::Mat& output, int pdf, std::initializer_list<double> il)
 {
 	output = input.clone();
-	mt19937 gen(random_device{}());
+
 	DistributionWrapper dist_wrapper;
 
 	if (pdf == DIST_NORMAL || pdf == DIST_GAUSSIAN) {
@@ -115,7 +115,7 @@ void DataAugmentor::addPDFNoise(cv::Mat& input, cv::Mat& output, int pdf, std::i
 	if (input.channels() == 1) {
 		for (auto it = input.begin<uchar>(); it != input.end<uchar>(); ++it) {
 			int val = static_cast<int>(*it);
-			val += dist_wrapper.getValue();
+			val += round(dist_wrapper.getValue());
 			val = std::clamp(val, 0, 255);
 			*it = static_cast<uchar>(val);
 		}
@@ -124,7 +124,7 @@ void DataAugmentor::addPDFNoise(cv::Mat& input, cv::Mat& output, int pdf, std::i
 		for (auto it = input.begin<Vec3b>(); it != input.end<Vec3b>(); ++it) {
 			for (int i = 0; i < 3; ++i) {
 				int val = static_cast<int>((*it)[i]);
-				val += dist_wrapper.getValue();
+				val += round(dist_wrapper.getValue());
 				val = std::clamp(val, 0, 255);
 				(*it)[i] = static_cast<uchar>(val);
 			}

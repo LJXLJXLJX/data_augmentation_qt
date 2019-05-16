@@ -3,6 +3,7 @@
 
 using namespace std;
 
+
 void DistributionWrapper::setNormalDistribution(double mu, double sigma)
 {
 	m_pdf = DIST_NORMAL;
@@ -21,19 +22,17 @@ void DistributionWrapper::setGammaDistribution(double alpha, double beta)
 	m_gamma_dist.param(gamma_distribution<>::param_type(alpha, beta));
 }
 
-int DistributionWrapper::getValue()
+double DistributionWrapper::getValue()
 {
-	double tmp = 0;
+	double ret = 0;
 	if (m_pdf == DIST_NORMAL) {
-		tmp = m_normal_dist(m_gen);
+		ret = m_normal_dist(m_gen);
 	}
 	else if (m_pdf == DIST_UNIFORM) {
-		tmp = m_uniform_real_dist(m_gen);
+		ret = m_uniform_real_dist(m_gen);
 	}
 	else if (m_pdf == DIST_GAMMA) {
-		tmp = m_gamma_dist(m_gen);
+		ret = m_gamma_dist(m_gen);
 	}
-	tmp = round(tmp);
-	int ret = tmp;
 	return ret;
 }

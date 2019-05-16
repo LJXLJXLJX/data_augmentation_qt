@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="pageTranslate">
     <widget class="QDoubleSpinBox" name="translateXSpinBoxMin">
@@ -42,7 +42,7 @@
       <double>0.100000000000000</double>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="translateYSpinBox">
+    <widget class="QDoubleSpinBox" name="translateYSpinBoxMin">
      <property name="geometry">
       <rect>
        <x>63</x>
@@ -937,6 +937,19 @@
      <string>伽马噪声</string>
     </property>
    </item>
+  </widget>
+  <widget class="QPushButton" name="commandEditorOKButton">
+   <property name="geometry">
+    <rect>
+     <x>242</x>
+     <y>397</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>确定</string>
+   </property>
   </widget>
  </widget>
  <resources/>

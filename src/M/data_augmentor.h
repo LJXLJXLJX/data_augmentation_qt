@@ -21,9 +21,9 @@ public:
 
 	void translation(cv::Mat& input, cv::Mat& output, int dx, int dy, int border_type, int arg = 0);
 
-	void rotate(cv::Mat& input, cv::Mat& output, int center_x, int center_y, float theta, int border_type, int arg = 0);
+	void rotate(cv::Mat& input, cv::Mat& output, int center_x, int center_y, double theta, int border_type, int arg = 0);
 
-	void scaling(cv::Mat& input, cv::Mat& output, float relative_x, float relative_y, int interpolation_mode = cv::INTER_LINEAR);
+	void scaling(cv::Mat& input, cv::Mat& output, double relative_x, double relative_y, int interpolation_mode = cv::INTER_LINEAR);
 
 	void flipping(cv::Mat& input, cv::Mat& output, int flip_code);
 

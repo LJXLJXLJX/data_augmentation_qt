@@ -33,9 +33,6 @@
     <Filter Include="Source Files\C">
       <UniqueIdentifier>{976f04c6-0f6c-49cd-9e18-b226cdd31f6a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\utils">
-      <UniqueIdentifier>{d079a0f4-2e4f-4efe-a558-a535346f7588}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -47,11 +44,11 @@
     <ClCompile Include="src\M\data_augmentor.cpp">
       <Filter>Source Files\M</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\distribution_wrapper.cpp">
-      <Filter>Source Files\utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\C\command_editor.cpp">
       <Filter>Source Files\C</Filter>
+    </ClCompile>
+    <ClCompile Include="src\M\distribution_wrapper.cpp">
+      <Filter>Source Files\M</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,11 +66,14 @@
     <ClInclude Include="src\M\data_augmentor.h">
       <Filter>Source Files\M</Filter>
     </ClInclude>
-    <ClInclude Include="src\utils\distribution_wrapper.h">
-      <Filter>Source Files\utils</Filter>
-    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_command_editor.h">
       <Filter>Source Files\V</Filter>
+    </ClInclude>
+    <ClInclude Include="src\C\command.h">
+      <Filter>Source Files\C</Filter>
+    </ClInclude>
+    <ClInclude Include="src\M\distribution_wrapper.h">
+      <Filter>Source Files\M</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
