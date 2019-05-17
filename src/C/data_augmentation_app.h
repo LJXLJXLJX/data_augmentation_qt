@@ -21,17 +21,28 @@ public:
 
 	Command*& addNewCommand(int flag, CommandEditor* ce, std::initializer_list<double> il);
 
+	Command*& addNewCommand(int flag, CommandEditor* ce, std::initializer_list<int> il);
+
+	Command*& addNewCommand(int flag, CommandEditor* ce, std::initializer_list<bool> il);
+
 	void resetCommand(int flag, CommandEditor* ce, std::initializer_list<double> il);
+
+	void resetCommand(int flag, CommandEditor* ce, std::initializer_list<int> il);
+
+	void resetCommand(int flag, CommandEditor* ce, std::initializer_list<bool> il);
 
 	cv::Mat processImgAccordingToCommandList(cv::Mat& img);
 	
-
 
 private:
 	Ui::DataAugmentationClass ui;
 	cv::Mat m_demo_img;
 
 	Command* createCommand(int flag, CommandEditor*ce, std::initializer_list<double> il);
+	
+	Command* createCommand(int flag, CommandEditor*ce, std::initializer_list<bool> il);
+
+	Command* createCommand(int flag, CommandEditor*ce, std::initializer_list<int> il);
 
 	void processImgAccordingToACommand(Command* cmd, cv::Mat& img);
 

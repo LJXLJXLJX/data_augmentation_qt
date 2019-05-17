@@ -396,7 +396,7 @@ public:
 
         retranslateUi(commandEditorClass);
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(8);
 
 
         QMetaObject::connectSlotsByName(commandEditorClass);
