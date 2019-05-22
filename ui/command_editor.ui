@@ -287,7 +287,7 @@
       <number>1</number>
      </property>
     </widget>
-    <widget class="QSpinBox" name="gaussianFilterKxLableSpinBoxMin">
+    <widget class="QSpinBox" name="gaussianFilterKySpinBoxMin">
      <property name="geometry">
       <rect>
        <x>110</x>
@@ -359,7 +359,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QSpinBox" name="gaussianFilterKxLableSpinBoxMax">
+    <widget class="QSpinBox" name="gaussianFilterKySpinBoxMax">
      <property name="geometry">
       <rect>
        <x>200</x>

@@ -10,39 +10,28 @@ DataAugmentationApp::DataAugmentationApp(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-	setFixedSize(800, 600);
+	setFixedSize(535, 600);
 	m_demo_img = imread("Resources/hj.jpg");
 }
 
 
-Command*& DataAugmentationApp::addNewCommand(int flag, CommandEditor* ce, std::initializer_list<double> il)
+Command*& DataAugmentationApp::addNewCommand(int flag, CommandEditor* ce, std::vector<std::any> vec)
 {
-	Command* cmd = createCommand(flag, ce, il);
+	Command* cmd = createCommand(flag, ce, vec);
 	if (cmd != Q_NULLPTR)
 		ui.commandList->addItem(cmd);
 	return cmd;
 }
 
-Command*& DataAugmentationApp::addNewCommand(int flag, CommandEditor* ce, std::initializer_list<int> il) {
-	Command* cmd = createCommand(flag, ce, il);
-	if (cmd != Q_NULLPTR)
-		ui.commandList->addItem(cmd);
-	return cmd;
-}
 
-Command*& DataAugmentationApp::addNewCommand(int flag, CommandEditor* ce, std::initializer_list<bool> il) {
-	Command* cmd = createCommand(flag, ce, il);
-	if (cmd != Q_NULLPTR)
-		ui.commandList->addItem(cmd);
-	return cmd;
-}
-void DataAugmentationApp::resetCommand(int flag, CommandEditor* ce, std::initializer_list<double> il)
+void DataAugmentationApp::resetCommand(int flag, CommandEditor* ce, std::vector<std::any> vec)
 {
-	Command* cmd = createCommand(flag, ce, il);
+	Command* cmd = createCommand(flag, ce, vec);
 	int row = ui.commandList->currentRow();
 	delete ui.commandList->currentItem();
 	ui.commandList->insertItem(row, cmd);
 }
+
 
 cv::Mat DataAugmentationApp::processImgAccordingToCommandList(cv::Mat & img)
 {
@@ -59,39 +48,21 @@ cv::Mat DataAugmentationApp::processImgAccordingToCommandList(cv::Mat & img)
 	return ret;
 }
 
-Command * DataAugmentationApp::createCommand(int flag, CommandEditor*ce, std::initializer_list<double> il)
+Command * DataAugmentationApp::createCommand(int flag, CommandEditor*ce, std::vector<std::any> vec)
 {
 	Command* cmd = Q_NULLPTR;
 	switch (flag) {
-	case OP_TRANSLATE:			cmd = new CommandTranslate(ce, "平移", il); break;
-	case OP_ROTATE:				cmd = new CommandRotate(ce, "旋转", il); break;
-	case OP_SCALING:			cmd = new  CommandScaling(ce, "缩放", il); break;
-	case OP_GAUSSIAN_FILTER:	cmd = new CommandGaussianFilter(ce, "高斯滤波", il); break;
-	case OP_BILATERAL_FILTER:	cmd = new CommandBilateralFilter(ce, "双线性滤波", il); break;
-	case OP_GAUSSIAN_NOISE:		cmd = new CommandGaussianNoise(ce, "高斯噪声", il); break;
-	case OP_UNIFORM_NOISE:		cmd = new CommandUniformNoise(ce, "均值噪声", il); break;
-	case OP_GAMMA_NOISE:		cmd = new CommandGammaNoise(ce, "伽马噪声", il); break;
-	default:break;
-	}
-	return cmd;
-}
-
-Command* DataAugmentationApp::createCommand(int flag, CommandEditor*ce, std::initializer_list<bool> il)
-{
-	Command* cmd = Q_NULLPTR;
-	switch (flag) {
-	case OP_FLIPPING:			cmd = new CommandFlipping(ce, "翻转", il);
-	default:break;
-	}
-	return cmd;
-}
-
-Command* DataAugmentationApp::createCommand(int flag, CommandEditor*ce, std::initializer_list<int> il)
-{
-	Command* cmd = Q_NULLPTR;
-	switch (flag) {
-	case OP_MEDIAN_FILTER:		cmd = new CommandMedianFilter(ce, "中值滤波", il); break;
-	case OP_MEAN_FILTER:		cmd = new CommandMeanFilter(ce, "均值滤波", il); break;
+	case OP_TRANSLATE:			cmd = new CommandTranslate(ce, "平移", vec); break;
+	case OP_ROTATE:				cmd = new CommandRotate(ce, "旋转", vec); break;
+	case OP_SCALING:			cmd = new  CommandScaling(ce, "缩放", vec); break;
+	case OP_FLIPPING:			cmd = new CommandFlipping(ce, "翻转", vec); break;
+	case OP_GAUSSIAN_FILTER:	cmd = new CommandGaussianFilter(ce, "高斯滤波", vec); break;
+	case OP_MEDIAN_FILTER:		cmd = new CommandMedianFilter(ce, "中值滤波", vec); break;
+	case OP_MEAN_FILTER:		cmd = new CommandMeanFilter(ce, "均值滤波", vec); break;
+	case OP_BILATERAL_FILTER:	cmd = new CommandBilateralFilter(ce, "双线性滤波", vec); break;
+	case OP_GAUSSIAN_NOISE:		cmd = new CommandGaussianNoise(ce, "高斯噪声", vec); break;
+	case OP_UNIFORM_NOISE:		cmd = new CommandUniformNoise(ce, "均值噪声", vec); break;
+	case OP_GAMMA_NOISE:		cmd = new CommandGammaNoise(ce, "伽马噪声", vec); break;
 	default:break;
 	}
 	return cmd;
@@ -110,7 +81,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 			qDebug() << "fail to cast";
 			return;
 		}
-		if (cmd_transate->m_x_min >= cmd_transate->m_x_max || cmd_transate->m_y_min >= cmd_transate->m_y_max) {
+		if (cmd_transate->m_x_min > cmd_transate->m_x_max || cmd_transate->m_y_min > cmd_transate->m_y_max) {
 			qDebug() << "invalid params";
 			return;
 		}
@@ -128,7 +99,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 			qDebug() << "fail to cast";
 			return;
 		}
-		if (cmd_rotate->m_theta_min >= cmd_rotate->m_theta_max) {
+		if (cmd_rotate->m_theta_min > cmd_rotate->m_theta_max) {
 			qDebug() << "invalid params";
 			return;
 		}
@@ -142,8 +113,8 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 		qDebug() << "fail to cast";
 		return;
 	}
-	if (cmd_scaling->m_x_min >= cmd_scaling->m_x_max ||
-		cmd_scaling->m_y_min >= cmd_scaling->m_y_max) {
+	if (cmd_scaling->m_x_min > cmd_scaling->m_x_max ||
+		cmd_scaling->m_y_min > cmd_scaling->m_y_max) {
 		qDebug() << "invalid params";
 		return;
 	}
@@ -180,10 +151,10 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 			qDebug() << "fail to cast";
 			return;
 		}
-		if (cmd_gaussian_filter->m_kx_min >= cmd_gaussian_filter->m_kx_max ||
-			cmd_gaussian_filter->m_ky_min >= cmd_gaussian_filter->m_ky_max ||
-			cmd_gaussian_filter->m_sigma_x_min >= cmd_gaussian_filter->m_sigma_x_max ||
-			cmd_gaussian_filter->m_sigma_y_min >= cmd_gaussian_filter->m_sigma_y_max) {
+		if (cmd_gaussian_filter->m_kx_min > cmd_gaussian_filter->m_kx_max ||
+			cmd_gaussian_filter->m_ky_min > cmd_gaussian_filter->m_ky_max ||
+			cmd_gaussian_filter->m_sigma_x_min > cmd_gaussian_filter->m_sigma_x_max ||
+			cmd_gaussian_filter->m_sigma_y_min > cmd_gaussian_filter->m_sigma_y_max) {
 			qDebug() << "invalid params";
 			return;
 		}
@@ -203,7 +174,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 		qDebug() << "fail to cast";
 		return;
 	}
-	if (cmd_median_filter->m_ksize_min >= cmd_median_filter->m_ksize_max) {
+	if (cmd_median_filter->m_ksize_min > cmd_median_filter->m_ksize_max) {
 		qDebug() << "invalid params";
 		return;
 	}
@@ -218,8 +189,8 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 			qDebug() << "fail to cast";
 			return;
 		}
-		if (cmd_mean_filter->m_kx_min >= cmd_mean_filter->m_kx_max ||
-			cmd_mean_filter->m_ky_min >= cmd_mean_filter->m_ky_max) {
+		if (cmd_mean_filter->m_kx_min > cmd_mean_filter->m_kx_max ||
+			cmd_mean_filter->m_ky_min > cmd_mean_filter->m_ky_max) {
 			qDebug() << "invalid params";
 			return;
 		}
@@ -236,9 +207,9 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 			qDebug() << "fail to cast";
 			return;
 		}
-		if (cmd_bilatera_filter->m_d_min >= cmd_bilatera_filter->m_d_max ||
-			cmd_bilatera_filter->m_sigma_color_min >= cmd_bilatera_filter->m_sigma_color_max ||
-			cmd_bilatera_filter->m_sigma_space_min >= cmd_bilatera_filter->m_sigma_space_max) {
+		if (cmd_bilatera_filter->m_d_min > cmd_bilatera_filter->m_d_max ||
+			cmd_bilatera_filter->m_sigma_color_min > cmd_bilatera_filter->m_sigma_color_max ||
+			cmd_bilatera_filter->m_sigma_space_min > cmd_bilatera_filter->m_sigma_space_max) {
 			qDebug() << "invalid params";
 			return;
 		}
@@ -260,8 +231,8 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 			qDebug() << "fail to cast";
 			return;
 		}
-		if (cmd_gaussian_noise->m_mu_min >= cmd_gaussian_noise->m_mu_max ||
-			cmd_gaussian_noise->m_sigma_min >= cmd_gaussian_noise->m_mu_max) {
+		if (cmd_gaussian_noise->m_mu_min > cmd_gaussian_noise->m_mu_max ||
+			cmd_gaussian_noise->m_sigma_min > cmd_gaussian_noise->m_mu_max) {
 			qDebug() << "invalid params";
 			return;
 		}
@@ -279,7 +250,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 			qDebug() << "fail to cast";
 			return;
 		}
-		if (cmd_uniform_noise->m_a >= cmd_uniform_noise->m_b) {
+		if (cmd_uniform_noise->m_a > cmd_uniform_noise->m_b) {
 			qDebug() << "invalid params";
 			return;
 		}
@@ -295,8 +266,8 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 			qDebug() << "fail to cast";
 			return;
 		}
-		if (cmd_gamma_noise->m_alpha_min >= cmd_gamma_noise->m_alpha_max ||
-			cmd_gamma_noise->m_beta_min >= cmd_gamma_noise->m_beta_max) {
+		if (cmd_gamma_noise->m_alpha_min > cmd_gamma_noise->m_alpha_max ||
+			cmd_gamma_noise->m_beta_min > cmd_gamma_noise->m_beta_max) {
 			qDebug() << "invalid params";
 			return;
 		}
@@ -311,11 +282,19 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 
 void DataAugmentationApp::on_pb_addItemToCommandList_clicked()
 {
-	qDebug("clicked");
+	qDebug("add clicked");
 	CommandEditor* ce = new CommandEditor(this);
 	ce->exec();
 	if (ce->getCommand() == Q_NULLPTR)
 		delete ce;
+}
+
+void DataAugmentationApp::on_pb_deleteItemFromCommandList_clicked()
+{
+	qDebug("delete clicked");
+	if (ui.commandList->count() == 0)
+		return;
+	delete ui.commandList->currentItem();
 }
 
 void DataAugmentationApp::on_commandList_itemDoubleClicked(QListWidgetItem *item)

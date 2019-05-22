@@ -1,5 +1,6 @@
 #pragma once
-#include <initializer_list>
+#include <vector>
+#include <any>
 
 #include "command_editor.h"
 #include "qlistwidget.h"
@@ -30,11 +31,8 @@ public:
 
 	virtual ~Command() {}
 
-	virtual void setParams(std::initializer_list<double> il) {};
+	virtual void setParams(std::vector<std::any>vec) {};
 
-	virtual void setParams(std::initializer_list<bool> il) {};
-
-	virtual void setParams(std::initializer_list<int> il) {};
 
 	CommandEditor*& getCommandEditor() {
 		return m_p_command_editor;
@@ -51,18 +49,18 @@ protected:
 
 class CommandTranslate : public Command {
 public:
-	CommandTranslate(CommandEditor* p_ce, const char* text, std::initializer_list<double> il)
+	CommandTranslate(CommandEditor* p_ce, const char* text, std::vector<std::any>vec)
 		:Command(OP_TRANSLATE, p_ce, text)
 	{
-		setParams(il);
+		setParams(vec);
 	}
 
-	void setParams(std::initializer_list<double> il) {
-		auto it = il.begin();
-		m_x_min = *it++;
-		m_x_max = *it++;
-		m_y_min = *it++;
-		m_y_max = *it++;
+	void setParams(std::vector<std::any>vec) {
+		auto it =vec.begin();
+		m_x_min = std::any_cast<double>(*it++);
+		m_x_max = std::any_cast<double>(*it++);
+		m_y_min = std::any_cast<double>(*it++);
+		m_y_max = std::any_cast<double>(*it++);
 	}
 	double m_x_min;
 	double m_x_max;
@@ -72,16 +70,16 @@ public:
 
 class CommandRotate : public Command {
 public:
-	CommandRotate(CommandEditor* p_ce, const char* text, std::initializer_list<double> il)
+	CommandRotate(CommandEditor* p_ce, const char* text, std::vector<std::any>vec)
 		:Command(OP_ROTATE, p_ce, text)
 	{
-		setParams(il);
+		setParams(vec);
 	}
 
-	void setParams(std::initializer_list<double> il) {
-		auto it = il.begin();
-		m_theta_min = *it++;
-		m_theta_max = *it++;
+	void setParams(std::vector<std::any>vec) {
+		auto it =vec.begin();
+		m_theta_min = std::any_cast<double>(*it++);
+		m_theta_max = std::any_cast<double>(*it++);
 	}
 	double m_theta_min;
 	double m_theta_max;
@@ -89,18 +87,18 @@ public:
 
 class CommandScaling : public Command {
 public:
-	CommandScaling(CommandEditor* p_ce, const char* text, std::initializer_list<double> il)
+	CommandScaling(CommandEditor* p_ce, const char* text, std::vector<std::any>vec)
 		:Command(OP_SCALING, p_ce, text)
 	{
-		setParams(il);
+		setParams(vec);
 	}
 
-	void setParams(std::initializer_list<double> il) {
-		auto it = il.begin();
-		m_x_min = *it++;
-		m_x_max = *it++;
-		m_y_min = *it++;
-		m_y_max = *it++;
+	void setParams(std::vector<std::any>vec) {
+		auto it =vec.begin();
+		m_x_min = std::any_cast<double>(*it++);
+		m_x_max = std::any_cast<double>(*it++);
+		m_y_min = std::any_cast<double>(*it++);
+		m_y_max = std::any_cast<double>(*it++);
 	}
 
 	double m_x_min;
@@ -111,16 +109,16 @@ public:
 
 class CommandFlipping : public Command {
 public:
-	CommandFlipping(CommandEditor* p_ce, const char* text, std::initializer_list<bool> il)
+	CommandFlipping(CommandEditor* p_ce, const char* text, std::vector<std::any>vec)
 		:Command(OP_FLIPPING, p_ce, text)
 	{
-		setParams(il);
+		setParams(vec);
 	}
 
-	void setParams(std::initializer_list<bool> il) {
-		auto it = il.begin();
-		m_x = *it++;
-		m_y = *it++;
+	void setParams(std::vector<std::any>vec) {
+		auto it =vec.begin();
+		m_x = std::any_cast<bool>(*it++);
+		m_y = std::any_cast<bool>(*it++);
 	}
 	bool m_x;
 	bool m_y;
@@ -128,21 +126,21 @@ public:
 
 class CommandGaussianFilter : public Command {
 public:
-	CommandGaussianFilter(CommandEditor* p_ce, const char* text, std::initializer_list<double>il)
+	CommandGaussianFilter(CommandEditor* p_ce, const char* text, std::vector<std::any> vec)
 		:Command(OP_GAUSSIAN_FILTER, p_ce, text)
 	{
-		setParams(il);
+		setParams(vec);
 	}
-	void setParams(std::initializer_list<double> il) {
-		auto it = il.begin();
-		m_kx_min = static_cast<int>(round(*it++));
-		m_kx_max = static_cast<int>(round(*it++));
-		m_ky_min = static_cast<int>(round(*it++));
-		m_ky_max = static_cast<int>(round(*it++));
-		m_sigma_x_min = *it++;
-		m_sigma_x_max = *it++;
-		m_sigma_y_min = *it++;
-		m_sigma_y_max = *it++;
+	void setParams(std::vector<std::any>vec) {
+		auto it =vec.begin();
+		m_kx_min = std::any_cast<int>(*it++);
+		m_kx_max = std::any_cast<int>(*it++);
+		m_ky_min = std::any_cast<int>(*it++);
+		m_ky_max = std::any_cast<int>(*it++);
+		m_sigma_x_min = std::any_cast<double>(*it++);
+		m_sigma_x_max = std::any_cast<double>(*it++);
+		m_sigma_y_min = std::any_cast<double>(*it++);
+		m_sigma_y_max = std::any_cast<double>(*it++);
 	}
 	int m_kx_min;
 	int m_kx_max;
@@ -156,15 +154,15 @@ public:
 
 class CommandMedianFilter : public Command {
 public:
-	CommandMedianFilter(CommandEditor* p_ce, const char* text, std::initializer_list<int>il)
+	CommandMedianFilter(CommandEditor* p_ce, const char* text, std::vector<std::any> vec)
 		:Command(OP_MEDIAN_FILTER, p_ce, text)
 	{
-		setParams(il);
+		setParams(vec);
 	}
-	void setParams(std::initializer_list<int> il) {
-		auto it = il.begin();
-		m_ksize_min = *it++;
-		m_ksize_max = *it++;
+	void setParams(std::vector<std::any>vec) {
+		auto it =vec.begin();
+		m_ksize_min = std::any_cast<int>(*it++);
+		m_ksize_max = std::any_cast<int>(*it++);
 	}
 	int m_ksize_min;
 	int m_ksize_max;
@@ -173,17 +171,17 @@ public:
 
 class CommandMeanFilter : public Command {
 public:
-	CommandMeanFilter(CommandEditor* p_ce, const char* text, std::initializer_list<int>il)
+	CommandMeanFilter(CommandEditor* p_ce, const char* text, std::vector<std::any> vec)
 		:Command(OP_MEAN_FILTER, p_ce, text)
 	{
-		setParams(il);
+		setParams(vec);
 	}
-	void setParams(std::initializer_list<int> il) {
-		auto it = il.begin();
-		m_kx_min = *it++;
-		m_kx_max = *it++;
-		m_ky_min = *it++;
-		m_ky_max = *it++;
+	void setParams(std::vector<std::any>vec) {
+		auto it =vec.begin();
+		m_kx_min = std::any_cast<int>(*it++);
+		m_kx_max = std::any_cast<int>(*it++);
+		m_ky_min = std::any_cast<int>(*it++);
+		m_ky_max = std::any_cast<int>(*it++);
 	}
 	int m_kx_min;
 	int m_kx_max;
@@ -193,19 +191,19 @@ public:
 
 class CommandBilateralFilter : public Command {
 public:
-	CommandBilateralFilter(CommandEditor* p_ce, const char* text, std::initializer_list<double>il)
+	CommandBilateralFilter(CommandEditor* p_ce, const char* text, std::vector<std::any> vec)
 		:Command(OP_BILATERAL_FILTER, p_ce, text)
 	{
-		setParams(il);
+		setParams(vec);
 	}
-	void setParams(std::initializer_list<double> il) {
-		auto it = il.begin();
-		m_d_min = static_cast<int>(round(*it++));
-		m_d_max = static_cast<int>(round(*it++));
-		m_sigma_color_min = *it++;
-		m_sigma_color_max = *it++;
-		m_sigma_space_min = *it++;
-		m_sigma_space_max = *it++;
+	void setParams(std::vector<std::any>vec) {
+		auto it =vec.begin();
+		m_d_min = std::any_cast<int>(*it++);
+		m_d_max = std::any_cast<int>(*it++);
+		m_sigma_color_min = std::any_cast<double>(*it++);
+		m_sigma_color_max = std::any_cast<double>(*it++);
+		m_sigma_space_min = std::any_cast<double>(*it++);
+		m_sigma_space_max = std::any_cast<double>(*it++);
 	}
 	int m_d_min;
 	int m_d_max;
@@ -217,17 +215,17 @@ public:
 
 class CommandGaussianNoise : public Command {
 public:
-	CommandGaussianNoise(CommandEditor* p_ce, const char* text, std::initializer_list<double>il)
+	CommandGaussianNoise(CommandEditor* p_ce, const char* text, std::vector<std::any> vec)
 		:Command(OP_GAUSSIAN_NOISE, p_ce, text)
 	{
-		setParams(il);
+		setParams(vec);
 	}
-	void setParams(std::initializer_list<double> il) {
-		auto it = il.begin();
-		m_mu_min = *it++;
-		m_mu_max = *it++;
-		m_sigma_min = *it++;
-		m_sigma_max = *it++;
+	void setParams(std::vector<std::any>vec) {
+		auto it =vec.begin();
+		m_mu_min = std::any_cast<double>(*it++);
+		m_mu_max = std::any_cast<double>(*it++);
+		m_sigma_min = std::any_cast<double>(*it++);
+		m_sigma_max = std::any_cast<double>(*it++);
 	}
 	double m_mu_min;
 	double m_mu_max;
@@ -237,15 +235,15 @@ public:
 
 class CommandUniformNoise : public Command {
 public:
-	CommandUniformNoise(CommandEditor* p_ce, const char* text, std::initializer_list<double>il)
+	CommandUniformNoise(CommandEditor* p_ce, const char* text, std::vector<std::any> vec)
 		:Command(OP_UNIFORM_NOISE, p_ce, text)
 	{
-		setParams(il);
+		setParams(vec);
 	}
-	void setParams(std::initializer_list<double> il) {
-		auto it = il.begin();
-		m_a = *it++;
-		m_b = *it++;
+	void setParams(std::vector<std::any>vec) {
+		auto it =vec.begin();
+		m_a = std::any_cast<double>(*it++);
+		m_b = std::any_cast<double>(*it++);
 	}
 	double m_a;
 	double m_b;
@@ -253,17 +251,17 @@ public:
 
 class CommandGammaNoise : public Command {
 public:
-	CommandGammaNoise(CommandEditor* p_ce, const char* text, std::initializer_list<double>il)
+	CommandGammaNoise(CommandEditor* p_ce, const char* text, std::vector<std::any> vec)
 		:Command(OP_GAMMA_NOISE, p_ce, text)
 	{
-		setParams(il);
+		setParams(vec);
 	}
-	void setParams(std::initializer_list<double> il) {
-		auto it = il.begin();
-		m_alpha_min = *it++;
-		m_alpha_max = *it++;
-		m_beta_min = *it++;
-		m_beta_max = *it++;
+	void setParams(std::vector<std::any>vec) {
+		auto it =vec.begin();
+		m_alpha_min = std::any_cast<double>(*it++);
+		m_alpha_max = std::any_cast<double>(*it++);
+		m_beta_min = std::any_cast<double>(*it++);
+		m_beta_max = std::any_cast<double>(*it++);
 	}
 	double m_alpha_min;
 	double m_alpha_max;

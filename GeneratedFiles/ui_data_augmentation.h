@@ -32,6 +32,7 @@ public:
     QLabel *commandListLabel;
     QListWidget *commandList;
     QPushButton *pb_addItemToCommandList;
+    QPushButton *pb_deleteItemFromCommandList;
     QPushButton *pushButtonProcessDemo;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
@@ -42,12 +43,12 @@ public:
         if (DataAugmentationClass->objectName().isEmpty())
             DataAugmentationClass->setObjectName(QString::fromUtf8("DataAugmentationClass"));
         DataAugmentationClass->setEnabled(true);
-        DataAugmentationClass->resize(651, 600);
+        DataAugmentationClass->resize(534, 600);
         centralWidget = new QWidget(DataAugmentationClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(50, 30, 258, 301));
+        layoutWidget->setGeometry(QRect(50, 30, 258, 453));
         commandListLayout = new QVBoxLayout(layoutWidget);
         commandListLayout->setSpacing(6);
         commandListLayout->setContentsMargins(11, 11, 11, 11);
@@ -75,13 +76,18 @@ public:
 
         commandListLayout->addWidget(pb_addItemToCommandList);
 
+        pb_deleteItemFromCommandList = new QPushButton(layoutWidget);
+        pb_deleteItemFromCommandList->setObjectName(QString::fromUtf8("pb_deleteItemFromCommandList"));
+
+        commandListLayout->addWidget(pb_deleteItemFromCommandList);
+
         pushButtonProcessDemo = new QPushButton(centralWidget);
         pushButtonProcessDemo->setObjectName(QString::fromUtf8("pushButtonProcessDemo"));
-        pushButtonProcessDemo->setGeometry(QRect(430, 110, 119, 23));
+        pushButtonProcessDemo->setGeometry(QRect(365, 216, 119, 23));
         DataAugmentationClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(DataAugmentationClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 651, 23));
+        menuBar->setGeometry(QRect(0, 0, 534, 23));
         DataAugmentationClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(DataAugmentationClass);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -100,6 +106,7 @@ public:
         DataAugmentationClass->setWindowTitle(QApplication::translate("DataAugmentationClass", "DataAugmentation", nullptr));
         commandListLabel->setText(QApplication::translate("DataAugmentationClass", "\345\242\236\345\274\272\345\221\275\344\273\244\345\210\227\350\241\250", nullptr));
         pb_addItemToCommandList->setText(QApplication::translate("DataAugmentationClass", "\346\267\273\345\212\240\345\221\275\344\273\244", nullptr));
+        pb_deleteItemFromCommandList->setText(QApplication::translate("DataAugmentationClass", "\345\210\240\351\231\244\345\221\275\344\273\244", nullptr));
         pushButtonProcessDemo->setText(QApplication::translate("DataAugmentationClass", "\345\244\204\347\220\206\351\242\204\350\247\210\345\233\276\347\211\207", nullptr));
     } // retranslateUi
 

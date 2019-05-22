@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>651</width>
+    <width>534</width>
     <height>600</height>
    </rect>
   </property>
@@ -23,7 +23,7 @@
       <x>50</x>
       <y>30</y>
       <width>258</width>
-      <height>301</height>
+      <height>453</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="commandListLayout">
@@ -56,13 +56,20 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pb_deleteItemFromCommandList">
+       <property name="text">
+        <string>删除命令</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QPushButton" name="pushButtonProcessDemo">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>110</y>
+      <x>365</x>
+      <y>216</y>
       <width>119</width>
       <height>23</height>
      </rect>
@@ -77,7 +84,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>651</width>
+     <width>534</width>
      <height>23</height>
     </rect>
    </property>
