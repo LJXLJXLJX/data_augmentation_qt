@@ -16,6 +16,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\M\data_augmentor.cpp" />
     <ClCompile Include="src\M\distribution_wrapper.cpp" />
+    <ClCompile Include="src\M\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\command_editor.ui" />
@@ -25,6 +26,7 @@
     <ClInclude Include="GeneratedFiles\ui_command_editor.h" />
     <ClInclude Include="GeneratedFiles\ui_data_augmentation.h" />
     <ClInclude Include="src\M\distribution_wrapper.h" />
+    <ClInclude Include="src\M\utils.h" />
     <QtMoc Include="src\C\command_editor.h" />
     <ClInclude Include="src\C\command.h" />
     <ClInclude Include="src\M\data_augmentor.h" />

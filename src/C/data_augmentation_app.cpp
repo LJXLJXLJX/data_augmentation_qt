@@ -1,17 +1,36 @@
 ﻿#include "data_augmentation_app.h"
 #include "../M/data_augmentor.h"
 #include "../M/distribution_wrapper.h"
+#include "../M/utils.h"
+
 #include <qdebug.h>
+#include <qfiledialog.h>
+#include <qmessagebox.h>
+
+#include <filesystem>
+#include <thread>
+#include <queue>
+
 
 using namespace std;
 using namespace cv;
+namespace fs = filesystem;
 
 DataAugmentationApp::DataAugmentationApp(QWidget *parent)
-	: QMainWindow(parent)
+	: QMainWindow(parent), m_processed_num(0)
 {
 	ui.setupUi(this);
-	setFixedSize(535, 600);
+	setFixedSize(830, 600);
 	m_demo_img = imread("Resources/hj.jpg");
+
+#ifdef _DEBUG
+	ui.sbNum->setValue(100);
+	ui.sbThreadNum->setValue(1);
+	ui.leInputDir->setText("F:/Project/data_augmentation_qt/data_augmentation/test/origin");
+	ui.leOutputDir->setText("F:/Project/data_augmentation_qt/data_augmentation/test/aug");
+#endif // _DEBUG
+
+
 }
 
 
@@ -43,7 +62,7 @@ cv::Mat DataAugmentationApp::processImgAccordingToCommandList(cv::Mat & img)
 			qDebug() << "cast failed";
 			continue;
 		}
-		processImgAccordingToACommand(cmd, img);
+		processImgAccordingToACommand(cmd, ret);
 	}
 	return ret;
 }
@@ -232,7 +251,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 			return;
 		}
 		if (cmd_gaussian_noise->m_mu_min > cmd_gaussian_noise->m_mu_max ||
-			cmd_gaussian_noise->m_sigma_min > cmd_gaussian_noise->m_mu_max) {
+			cmd_gaussian_noise->m_sigma_min > cmd_gaussian_noise->m_sigma_max) {
 			qDebug() << "invalid params";
 			return;
 		}
@@ -269,6 +288,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 		if (cmd_gamma_noise->m_alpha_min > cmd_gamma_noise->m_alpha_max ||
 			cmd_gamma_noise->m_beta_min > cmd_gamma_noise->m_beta_max) {
 			qDebug() << "invalid params";
+
 			return;
 		}
 		dist_wrapper.setUniformDistribution(cmd_gamma_noise->m_alpha_min, cmd_gamma_noise->m_alpha_max);
@@ -280,7 +300,101 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 	}
 }
 
-void DataAugmentationApp::on_pb_addItemToCommandList_clicked()
+void DataAugmentationApp::processImgsInADirThread(const std::string input_dir, const std::string output_dir, int& count, int target_num)
+{
+	unique_lock<mutex> ul(m_mutex);
+	ul.unlock();	
+	while (count < target_num) {
+		for (auto& p : fs::directory_iterator(input_dir)) {
+			if (p.path().extension() != ".jpg" && p.path().extension() != ".bmp" &&
+				p.path().extension() != ".png" && p.path().extension() != ".jpeg") {
+				continue;
+			}
+			Mat img = imread(p.path().string(), -1);
+			Mat output_img = processImgAccordingToCommandList(img);
+
+			ul.lock();
+			if (count >= target_num)
+				return;
+			count++;
+			m_processed_num++;
+			//ui.progressBar->setValue(m_processed_num);
+			ul.unlock();
+			fs::path out(output_dir);
+			string output_path = out.append(randomStr() + ".jpg").string();
+			imwrite(output_path, output_img);
+		}
+	}
+}
+
+void DataAugmentationApp::processImgsInADir(std::string& input_dir, std::string& output_dir, int target_num, int thread_num)
+{
+	int count = 0;
+	for (int i = 0; i < thread_num; ++i) {
+		std::thread t([&]() {processImgsInADirThread(input_dir, output_dir, count, target_num); });
+		t.join();
+	}
+}
+
+std::list<std::string> DataAugmentationApp::getImgsInADir(std::string& dir)
+{
+	list<string> img_list;
+	for (auto& p : fs::directory_iterator(dir)) {
+		string tmp = p.path().string();
+		if (p.path().extension() == ".jpg" || p.path().extension() == ".bmp" ||
+			p.path().extension() == ".png" || p.path().extension() == ".jpeg") {
+			img_list.push_back(tmp);
+		}
+	}
+	return img_list;
+}
+
+std::list<std::string> DataAugmentationApp::getChildDir(std::string & dir)
+{
+	list<string> dir_list;
+	for (auto& p : fs::directory_iterator(dir)) {
+		if (fs::is_directory(p))
+			dir_list.push_back(p.path().string());
+		else if (p.path().extension() == ".jpg" || p.path().extension() == ".bmp" ||
+			p.path().extension() == ".png" || p.path().extension() == ".jpeg")
+			return {};
+
+	}
+	return dir_list;
+}
+
+std::list<std::string> DataAugmentationApp::getLeafDirs(std::string & dir)
+{
+	list<string> leaf_dir_list;
+	queue<string> dir_queue;
+	dir_queue.push(dir);
+	while (!dir_queue.empty()) {
+		list<string> sub_dirs = getChildDir(dir_queue.front());
+		if (sub_dirs.empty()) {
+			//还要确保子目录下有图像文件
+			for (auto& p : fs::directory_iterator(dir_queue.front()))
+				if (p.path().extension() == ".jpg" || p.path().extension() == ".bmp" ||
+					p.path().extension() == ".jpeg" || p.path().extension() == ".png") {
+					leaf_dir_list.push_back(dir_queue.front());
+					break;
+				}
+		}
+
+		else {
+			for (string dir : sub_dirs)
+				dir_queue.push(dir);
+		}
+		dir_queue.pop();
+	}
+#ifdef _DEBUG
+	for (string dir : leaf_dir_list)
+		qDebug() << dir.c_str();
+#endif // _DEBUG
+	return leaf_dir_list;
+}
+
+
+void DataAugmentationApp::on_pbAddItemToCommandList_clicked()
 {
 	qDebug("add clicked");
 	CommandEditor* ce = new CommandEditor(this);
@@ -289,7 +403,7 @@ void DataAugmentationApp::on_pb_addItemToCommandList_clicked()
 		delete ce;
 }
 
-void DataAugmentationApp::on_pb_deleteItemFromCommandList_clicked()
+void DataAugmentationApp::on_pbDeleteItemFromCommandList_clicked()
 {
 	qDebug("delete clicked");
 	if (ui.commandList->count() == 0)
@@ -309,7 +423,7 @@ void DataAugmentationApp::on_commandList_itemDoubleClicked(QListWidgetItem *item
 	ce->exec();
 }
 
-void DataAugmentationApp::on_pushButtonProcessDemo_clicked()
+void DataAugmentationApp::on_pbProcessDemo_clicked()
 {
 	imshow("处理前", m_demo_img);
 	Mat img_clone = m_demo_img.clone();
@@ -317,4 +431,66 @@ void DataAugmentationApp::on_pushButtonProcessDemo_clicked()
 	imshow("处理后", img_clone);
 	waitKey();
 	destroyAllWindows();
+}
+
+void DataAugmentationApp::on_pbSelectDemo_clicked()
+{
+	QString filename = QFileDialog::getOpenFileName(this, ("选择一个文件"), ".", tr("images(*.jpg *.jpeg *.bmp *.png)"));
+	if (filename.isEmpty())
+		return;
+	m_demo_img = imread(filename.toStdString(), -1);
+}
+
+void DataAugmentationApp::on_pbSelectInputDir_clicked()
+{
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+		"/home",
+		QFileDialog::ShowDirsOnly
+		| QFileDialog::DontResolveSymlinks);
+	if (dir.isEmpty())
+		return;
+	ui.leInputDir->setText(dir);
+}
+
+void DataAugmentationApp::on_pbSelectOutputDir_clicked()
+{
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+		"/home",
+		QFileDialog::ShowDirsOnly
+		| QFileDialog::DontResolveSymlinks);
+	if (dir.isEmpty())
+		return;
+	ui.leOutputDir->setText(dir);
+}
+
+void DataAugmentationApp::on_pbStart_clicked()
+{
+	QMessageBox mention(this);
+	mention.setWindowTitle(QString::fromLocal8Bit("提示"));
+	mention.setText(QString::fromLocal8Bit("请确保目录结构正确，若文件夹中存在图像文件，则不应该存在其他文件夹"));
+	mention.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	if (mention.exec() != QMessageBox::Ok)
+		return;
+
+	m_processed_num = 0;
+	fs::path input(ui.leInputDir->text().toStdString());
+	fs::path output(ui.leOutputDir->text().toStdString());
+	if (!fs::exists(input)) {
+		QMessageBox::about(this, QString::fromLocal8Bit("目录错误"), QString::fromLocal8Bit(" 输入目录不存在"));
+		return;
+	}
+	list<string> leaf_dirs = getLeafDirs(input.string());
+	int process_num_each_dir = ui.sbNum->value();
+	if (process_num_each_dir == 0)
+		return;
+	int to_process_num = process_num_each_dir * leaf_dirs.size();
+	int thread_num = ui.sbThreadNum->value();
+	string out_root = ui.leOutputDir->text().toStdString();
+	ui.progressBar->setMaximum(to_process_num);
+	for (string dir : leaf_dirs) {
+		string out_dir = fs::path(out_root).append(fs::path(dir).filename().string()).string();
+		if (!fs::exists(out_dir))
+			fs::create_directory(out_dir);
+		processImgsInADir(dir, out_dir, process_num_each_dir, thread_num);
+	}
 }

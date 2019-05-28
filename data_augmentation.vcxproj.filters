@@ -50,6 +50,9 @@
     <ClCompile Include="src\M\distribution_wrapper.cpp">
       <Filter>Source Files\M</Filter>
     </ClCompile>
+    <ClCompile Include="src\M\utils.cpp">
+      <Filter>Source Files\M</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\data_augmentation.ui">
@@ -73,6 +76,9 @@
       <Filter>Source Files\C</Filter>
     </ClInclude>
     <ClInclude Include="src\M\distribution_wrapper.h">
+      <Filter>Source Files\M</Filter>
+    </ClInclude>
+    <ClInclude Include="src\M\utils.h">
       <Filter>Source Files\M</Filter>
     </ClInclude>
   </ItemGroup>

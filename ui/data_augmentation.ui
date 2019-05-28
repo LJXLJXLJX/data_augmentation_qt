@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>534</width>
+    <width>830</width>
     <height>600</height>
    </rect>
   </property>
@@ -50,14 +50,14 @@
       <widget class="QListWidget" name="commandList"/>
      </item>
      <item>
-      <widget class="QPushButton" name="pb_addItemToCommandList">
+      <widget class="QPushButton" name="pbAddItemToCommandList">
        <property name="text">
         <string>添加命令</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pb_deleteItemFromCommandList">
+      <widget class="QPushButton" name="pbDeleteItemFromCommandList">
        <property name="text">
         <string>删除命令</string>
        </property>
@@ -65,11 +65,11 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButtonProcessDemo">
+   <widget class="QPushButton" name="pbProcessDemo">
     <property name="geometry">
      <rect>
-      <x>365</x>
-      <y>216</y>
+      <x>503</x>
+      <y>150</y>
       <width>119</width>
       <height>23</height>
      </rect>
@@ -78,26 +78,179 @@
      <string>处理预览图片</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pbSelectDemo">
+    <property name="geometry">
+     <rect>
+      <x>503</x>
+      <y>108</y>
+      <width>118</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>选择预览图片</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbSelectInputDir">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>247</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>选择目录</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbSelectOutputDir">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>304</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>选择目录</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="leInputDir">
+    <property name="geometry">
+     <rect>
+      <x>394</x>
+      <y>248</y>
+      <width>342</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="leOutputDir">
+    <property name="geometry">
+     <rect>
+      <x>394</x>
+      <y>306</y>
+      <width>342</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelInputDir">
+    <property name="geometry">
+     <rect>
+      <x>326</x>
+      <y>252</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>输入目录</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelOutputDir">
+    <property name="geometry">
+     <rect>
+      <x>327</x>
+      <y>310</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>输出目录</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelThreadNum">
+    <property name="geometry">
+     <rect>
+      <x>327</x>
+      <y>360</y>
+      <width>38</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>线程数</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="sbThreadNum">
+    <property name="geometry">
+     <rect>
+      <x>395</x>
+      <y>355</y>
+      <width>42</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>8</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelNum">
+    <property name="geometry">
+     <rect>
+      <x>491</x>
+      <y>361</y>
+      <width>103</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>每个目录增强数量</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="sbNum">
+    <property name="geometry">
+     <rect>
+      <x>606</x>
+      <y>357</y>
+      <width>42</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>99999</number>
+    </property>
+    <property name="singleStep">
+     <number>100</number>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbStart">
+    <property name="geometry">
+     <rect>
+      <x>528</x>
+      <y>436</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>开始</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>351</x>
+      <y>502</y>
+      <width>462</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+   </widget>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>534</width>
-     <height>23</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
