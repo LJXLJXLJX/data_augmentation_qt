@@ -4,6 +4,6 @@ El psy congroo
 
 需求：
 vs2017或以上版本（支持c++17）
-响应版本的qt(64位)
+相应版本的qt(64位)
 
 ![预览](./Resources/demo.jpg)
