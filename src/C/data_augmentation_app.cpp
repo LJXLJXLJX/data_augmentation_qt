@@ -241,8 +241,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 		Mat img_copy = img.clone();
 		img = Mat();
 		da->bilateralFilter(img_copy, img, d, sigma_color, sigma_space);
-		break;
-	}
+		break;}
 	case OP_GAUSSIAN_NOISE:
 	{
 		CommandGaussianNoise* cmd_gaussian_noise = dynamic_cast<CommandGaussianNoise*>(cmd);
@@ -260,8 +259,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 		dist_wrapper.setUniformDistribution(cmd_gaussian_noise->m_sigma_min, cmd_gaussian_noise->m_sigma_max);
 		double sigma = dist_wrapper.getValue();
 		da->addGaussianNoise(img, img, mu, sigma);
-		break;
-	}
+		break;}
 	case OP_UNIFORM_NOISE:
 	{
 		CommandUniformNoise* cmd_uniform_noise = dynamic_cast<CommandUniformNoise*>(cmd);
@@ -276,8 +274,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 		int a = cmd_uniform_noise->m_a;
 		int b = cmd_uniform_noise->m_b;
 		da->addUniformNoise(img, img, a, b);
-		break;
-	}
+		break;}
 	case OP_GAMMA_NOISE:
 	{
 		CommandGammaNoise* cmd_gamma_noise = dynamic_cast<CommandGammaNoise*>(cmd);
@@ -296,14 +293,16 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 		dist_wrapper.setUniformDistribution(cmd_gamma_noise->m_beta_min, cmd_gamma_noise->m_beta_max);
 		double beta = dist_wrapper.getValue();
 		da->addGammaNoise(img, img, alpha, beta);
+		break;
 	}
+	
 	}
 }
 
 void DataAugmentationApp::processImgsInADirThread(const std::string input_dir, const std::string output_dir, int& count, int target_num)
 {
 	unique_lock<mutex> ul(m_mutex);
-	ul.unlock();	
+	ul.unlock();
 	while (count < target_num) {
 		for (auto& p : fs::directory_iterator(input_dir)) {
 			if (p.path().extension() != ".jpg" && p.path().extension() != ".bmp" &&
@@ -427,8 +426,8 @@ void DataAugmentationApp::on_pbProcessDemo_clicked()
 {
 	imshow("处理前", m_demo_img);
 	Mat img_clone = m_demo_img.clone();
-	processImgAccordingToCommandList(img_clone);
-	imshow("处理后", img_clone);
+	Mat output=processImgAccordingToCommandList(img_clone);
+	imshow("处理后", output);
 	waitKey();
 	destroyAllWindows();
 }
