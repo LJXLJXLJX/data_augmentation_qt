@@ -106,9 +106,11 @@ public:
         leInputDir = new QLineEdit(centralWidget);
         leInputDir->setObjectName(QString::fromUtf8("leInputDir"));
         leInputDir->setGeometry(QRect(394, 248, 342, 20));
+        leInputDir->setReadOnly(true);
         leOutputDir = new QLineEdit(centralWidget);
         leOutputDir->setObjectName(QString::fromUtf8("leOutputDir"));
         leOutputDir->setGeometry(QRect(394, 306, 342, 20));
+        leOutputDir->setReadOnly(true);
         labelInputDir = new QLabel(centralWidget);
         labelInputDir->setObjectName(QString::fromUtf8("labelInputDir"));
         labelInputDir->setGeometry(QRect(326, 252, 54, 12));

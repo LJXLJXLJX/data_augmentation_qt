@@ -126,6 +126,9 @@
       <height>20</height>
      </rect>
     </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLineEdit" name="leOutputDir">
     <property name="geometry">
@@ -135,6 +138,9 @@
       <width>342</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="labelInputDir">

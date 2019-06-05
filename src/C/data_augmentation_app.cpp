@@ -17,11 +17,14 @@ using namespace cv;
 namespace fs = filesystem;
 
 DataAugmentationApp::DataAugmentationApp(QWidget *parent)
-	: QMainWindow(parent), m_processed_num(0)
+	: QMainWindow(parent), m_processed_num(0), m_running_thread_num(0)
 {
 	ui.setupUi(this);
 	setFixedSize(830, 600);
 	m_demo_img = imread("Resources/hj.jpg");
+	connect(this, SIGNAL(sig_updateBarSignal(int)), this, SLOT(updateBar(int)));
+	connect(this, SIGNAL(sig_processImgThreadStart()), this, SLOT(on_processImgThreadStart()));
+	connect(this, SIGNAL(sig_processImgThreadEnd()), this, SLOT(on_processImgThreadEnd()));
 
 #ifdef _DEBUG
 	ui.sbNum->setValue(100);
@@ -29,7 +32,6 @@ DataAugmentationApp::DataAugmentationApp(QWidget *parent)
 	ui.leInputDir->setText("F:/Project/data_augmentation_qt/data_augmentation/test/origin");
 	ui.leOutputDir->setText("F:/Project/data_augmentation_qt/data_augmentation/test/aug");
 #endif // _DEBUG
-
 
 }
 
@@ -241,7 +243,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 		Mat img_copy = img.clone();
 		img = Mat();
 		da->bilateralFilter(img_copy, img, d, sigma_color, sigma_space);
-		break;}
+		break; }
 	case OP_GAUSSIAN_NOISE:
 	{
 		CommandGaussianNoise* cmd_gaussian_noise = dynamic_cast<CommandGaussianNoise*>(cmd);
@@ -259,7 +261,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 		dist_wrapper.setUniformDistribution(cmd_gaussian_noise->m_sigma_min, cmd_gaussian_noise->m_sigma_max);
 		double sigma = dist_wrapper.getValue();
 		da->addGaussianNoise(img, img, mu, sigma);
-		break;}
+		break; }
 	case OP_UNIFORM_NOISE:
 	{
 		CommandUniformNoise* cmd_uniform_noise = dynamic_cast<CommandUniformNoise*>(cmd);
@@ -274,7 +276,7 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 		int a = cmd_uniform_noise->m_a;
 		int b = cmd_uniform_noise->m_b;
 		da->addUniformNoise(img, img, a, b);
-		break;}
+		break; }
 	case OP_GAMMA_NOISE:
 	{
 		CommandGammaNoise* cmd_gamma_noise = dynamic_cast<CommandGammaNoise*>(cmd);
@@ -295,9 +297,24 @@ void DataAugmentationApp::processImgAccordingToACommand(Command * cmd, cv::Mat& 
 		da->addGammaNoise(img, img, alpha, beta);
 		break;
 	}
-	
+
 	}
 }
+
+void DataAugmentationApp::processImgsThread(std::list<std::string> leaf_dirs, std::string out_root,
+	int process_num_each_dir, int thread_num)
+{
+	emit(sig_processImgThreadStart());
+	for (string dir : leaf_dirs) {
+		string out_dir = fs::path(out_root).append(fs::path(dir).filename().string()).string();
+		if (!fs::exists(out_dir))
+			fs::create_directory(out_dir);
+		processImgsInADir(dir, out_dir, process_num_each_dir, thread_num);
+	}
+	emit(sig_processImgThreadEnd());
+}
+
+
 
 void DataAugmentationApp::processImgsInADirThread(const std::string input_dir, const std::string output_dir, int& count, int target_num)
 {
@@ -311,13 +328,12 @@ void DataAugmentationApp::processImgsInADirThread(const std::string input_dir, c
 			}
 			Mat img = imread(p.path().string(), -1);
 			Mat output_img = processImgAccordingToCommandList(img);
-
 			ul.lock();
 			if (count >= target_num)
 				return;
 			count++;
 			m_processed_num++;
-			//ui.progressBar->setValue(m_processed_num);
+			emit(sig_updateBarSignal(m_processed_num));
 			ul.unlock();
 			fs::path out(output_dir);
 			string output_path = out.append(randomStr() + ".jpg").string();
@@ -328,11 +344,14 @@ void DataAugmentationApp::processImgsInADirThread(const std::string input_dir, c
 
 void DataAugmentationApp::processImgsInADir(std::string& input_dir, std::string& output_dir, int target_num, int thread_num)
 {
+	list<std::thread> t_list;
 	int count = 0;
 	for (int i = 0; i < thread_num; ++i) {
-		std::thread t([&]() {processImgsInADirThread(input_dir, output_dir, count, target_num); });
-		t.join();
+		t_list.emplace_back([&]() {processImgsInADirThread(input_dir, output_dir, count, target_num); });
+
 	}
+	for (auto& t : t_list)
+		t.join();
 }
 
 std::list<std::string> DataAugmentationApp::getImgsInADir(std::string& dir)
@@ -402,6 +421,7 @@ void DataAugmentationApp::on_pbAddItemToCommandList_clicked()
 		delete ce;
 }
 
+
 void DataAugmentationApp::on_pbDeleteItemFromCommandList_clicked()
 {
 	qDebug("delete clicked");
@@ -426,7 +446,7 @@ void DataAugmentationApp::on_pbProcessDemo_clicked()
 {
 	imshow("处理前", m_demo_img);
 	Mat img_clone = m_demo_img.clone();
-	Mat output=processImgAccordingToCommandList(img_clone);
+	Mat output = processImgAccordingToCommandList(img_clone);
 	imshow("处理后", output);
 	waitKey();
 	destroyAllWindows();
@@ -486,10 +506,44 @@ void DataAugmentationApp::on_pbStart_clicked()
 	int thread_num = ui.sbThreadNum->value();
 	string out_root = ui.leOutputDir->text().toStdString();
 	ui.progressBar->setMaximum(to_process_num);
-	for (string dir : leaf_dirs) {
-		string out_dir = fs::path(out_root).append(fs::path(dir).filename().string()).string();
-		if (!fs::exists(out_dir))
-			fs::create_directory(out_dir);
-		processImgsInADir(dir, out_dir, process_num_each_dir, thread_num);
-	}
+
+	std::thread t([&]() {processImgsThread(leaf_dirs, out_root, process_num_each_dir, thread_num); });
+	t.detach();
 }
+
+void DataAugmentationApp::updateBar(int value)
+{
+	ui.progressBar->setValue(value);
+	update();
+}
+
+void DataAugmentationApp::on_processImgThreadStart()
+{
+	ui.commandList->setEnabled(false);
+	ui.pbAddItemToCommandList->setEnabled(false);
+	ui.pbDeleteItemFromCommandList->setEnabled(false);
+	ui.pbStart->setEnabled(false);
+	ui.pbSelectDemo->setEnabled(false);
+	ui.pbProcessDemo->setEnabled(false);
+	ui.pbSelectInputDir->setEnabled(false);
+	ui.pbSelectOutputDir->setEnabled(false);
+	ui.sbNum->setEnabled(false);
+	ui.sbThreadNum->setEnabled(false);
+	update();
+}
+
+void DataAugmentationApp::on_processImgThreadEnd()
+{
+	ui.commandList->setEnabled(true);
+	ui.pbAddItemToCommandList->setEnabled(true);
+	ui.pbDeleteItemFromCommandList->setEnabled(true);
+	ui.pbStart->setEnabled(true);
+	ui.pbSelectDemo->setEnabled(true);
+	ui.pbProcessDemo->setEnabled(true);
+	ui.pbSelectInputDir->setEnabled(true);
+	ui.pbSelectOutputDir->setEnabled(true);
+	ui.sbNum->setEnabled(true);
+	ui.sbThreadNum->setEnabled(true);
+	update();
+}
+

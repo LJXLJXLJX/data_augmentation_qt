@@ -36,6 +36,8 @@ public:
 	*/
 
 
+
+
 private:
 	Ui::DataAugmentationClass ui;
 	cv::Mat m_demo_img;
@@ -49,6 +51,11 @@ private:
 	void processImgAccordingToACommand(Command* cmd, cv::Mat& img);
 	/*
 	根据一条命令来处理图像
+	*/
+
+	void processImgsThread(std::list<std::string> leaf_dirs, std::string out_root, int process_num_each_dir, int thread_num);
+	/*
+	为了保证执行时主线程不被阻塞，做增强要单独开一个线程
 	*/
 
 	void processImgsInADirThread(const std::string input_dir, const std::string output_dir, int& count, int target_num);
@@ -83,6 +90,14 @@ private:
 
 	int m_processed_num;
 
+	int m_running_thread_num;
+
+signals:
+	void sig_updateBarSignal(int);
+	void sig_processImgThreadStart();
+	void sig_processImgThreadEnd();
+
+
 private slots:
 
 	void on_pbAddItemToCommandList_clicked();
@@ -100,4 +115,12 @@ private slots:
 	void on_pbSelectOutputDir_clicked();
 
 	void on_pbStart_clicked();
+
+	void updateBar(int value);
+
+	void on_processImgThreadStart();
+
+	void on_processImgThreadEnd();
+
+
 };
